@@ -1,4 +1,4 @@
-🔑 UOV-PySig : Système de Signature Post-Quantique UOV en Python
+🔑 UOVapp : Système de Signature Post-Quantique UOV en Python
 
 Ce projet implémente un système de signature numérique basé sur le schéma Unbalanced Oil and Vinegar (UOV), une des constructions de cryptographie asymétrique multivariée considérée comme résistante aux attaques par ordinateurs quantiques.
 
@@ -18,7 +18,7 @@ Paramétrage Flexible : Permet de configurer les paramètres de sécurité clés
 
 Le projet est divisé en deux parties principales :
 
-uov.py (Cœur Cryptographique) : Contient toute la logique mathématique et cryptographique (manipulation des polynômes quadratiques, inversion de matrice, etc.).
+uov/uov.py (Cœur Cryptographique) : Contient toute la logique mathématique et cryptographique (manipulation des polynômes quadratiques, inversion de matrice, etc.).
 
 gui/main_app.py (Interface Utilisateur) : Gère l'application graphique, les interactions utilisateur et le lancement des opérations cryptographiques dans des threads séparés.
 
@@ -26,7 +26,7 @@ gui/main_app.py (Interface Utilisateur) : Gère l'application graphique, les int
 
 Prérequis
 
-Python 3.x
+Python 3.12
 
 Les bibliothèques nécessaires : PySide6
 
@@ -34,7 +34,7 @@ Installation
 
 Clonez le dépôt :
 
-git clone [https://github.com/votre_utilisateur/UOV-PySig.git](https://github.com/votre_utilisateur/UOV-PySig.git)
+git clone [https://github.com/Chris-Manuelpipo/UOVapp.git](https://github.com/Chris-Manuelpipr/UOVapp.git)
 cd UOV-PySig
 
 
@@ -54,24 +54,22 @@ python gui/main_app.py
 
 Générer les Clés :
 
-Dans l'onglet 🔑 Générer les clés, choisissez les paramètres v (Vinegar) et o (Oil). Assurez-vous que v > o.
+Dans l'onglet  Générer les clés, choisissez les paramètres v (Vinegar) et o (Oil). Assurez-vous que v > o.
 
-Cliquez sur "🛠️ Générer les clés". L'application démarre le calcul en arrière-plan et affiche un résumé structurel de la clé publique une fois terminé (évitant le gel de l'interface).
+Cliquez sur " Générer les clés". L'application démarre le calcul en arrière-plan et affiche un résumé structurel de la clé publique une fois terminé (évitant le gel de l'interface).
 
 Signer :
 
-Allez dans l'onglet ✍️ Signer un message.
+Allez dans l'onglet  Signer un message.
 
-Entrez le message et cliquez sur "✍️ Signer le message". La signature UOV (un long vecteur d'entiers) est affichée.
+Entrez le message et cliquez sur "Signer le message". La signature UOV (un long vecteur d'entiers) est affichée.
 
 Vérifier :
 
-Dans l'onglet ✅ Vérifier une signature, entrez le message original et copiez/collez le vecteur de signature.
+Dans l'onglet " Vérifier une signature, entrez le message original et copiez/collez le vecteur de signature.
 
-Cliquez sur "✅ Vérifier" pour confirmer si la signature est valide pour le message donné avec la clé publique générée.
+Cliquez sur " Vérifier" pour confirmer si la signature est valide pour le message donné avec la clé publique générée.
 
-🤝 Contribution
+ Contribution
 
 Les contributions sont les bienvenues ! Si vous souhaitez améliorer la performance des algorithmes cryptographiques, ajouter des fonctionnalités ou corriger des bugs, veuillez soumettre une Pull Request.
-
-License: [Ajoutez votre licence ici, ex: MIT]
