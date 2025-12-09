@@ -325,9 +325,9 @@ QTabBar::tab:selected {
 }
 """)
 
-    # --- Tab KeyGen (Inchangé) ---
+    # --- Tab KeyGen ---
     def tab_keygen(self):
-        # ... (Le code de tab_keygen reste identique)
+        
         w = QWidget()
         layout = QVBoxLayout()
         
@@ -371,10 +371,10 @@ QTabBar::tab:selected {
 
         w.setLayout(layout)
         return w
-        # ...
+        
 
     def handle_generate(self):
-        # ... (Le code de handle_generate reste identique)
+        
         v = int(self.spin_v.value())
         o = int(self.spin_o.value())
         if v <= o:
@@ -387,7 +387,6 @@ QTabBar::tab:selected {
         self.progress_dialog = QProgressDialog("Génération des clés ...", "Annuler", 0, 0, self)
         self.progress_dialog.setWindowModality(Qt.WindowModal)
         self.progress_dialog.show()
-        
         self.btn_gen.setEnabled(False) # Désactiver le bouton pendant le travail
         
         self.keygen_worker = KeyGenWorker(n, v, m)
@@ -396,7 +395,7 @@ QTabBar::tab:selected {
         # ...
 
     def keygen_finished(self, private_key, pub_text, priv_text, duration):
-        # ... (Le code de keygen_finished reste identique)
+        
         self.progress_dialog.close()
         self.btn_gen.setEnabled(True)
         
@@ -411,14 +410,14 @@ QTabBar::tab:selected {
         else:
              self.text_pub.setPlainText(pub_text)
              QMessageBox.critical(self, "Erreur de génération", "Erreur lors de la génération des clés.")
-        # ...
+      
 
     # --- Tab Signer (Fusionne Message et Document) ---
     def tab_sign(self):
         w = QWidget()
         layout = QVBoxLayout()
         
-        # --- Section 1: Signer un message texte ---
+        # --- Signer un message texte ---
         msg_group = QGroupBox("Signer un message ")
         msg_layout = QVBoxLayout()
         
@@ -438,7 +437,7 @@ QTabBar::tab:selected {
         msg_group.setLayout(msg_layout)
         layout.addWidget(msg_group)
 
-        # --- Section 2: Signer un document ---
+        # --- Signer un document ---
         sign_file_group = QGroupBox(" Signer un document")
         sign_file_layout = QVBoxLayout()
         

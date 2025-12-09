@@ -3,11 +3,10 @@ import hashlib
 import json
 import sys
 
-# ==========================================
-# 1. PARAMÈTRES & OUTILS MATHÉMATIQUES GF(2^8)
-# ==========================================
+# --- PARAMÈTRES & OUTILS MATHÉMATIQUES GF(2^8) ---
 
-# Corps fini: q=256 (GF(2^8)) -> Arithmétique polynomiale
+
+# Corps fini: q=256 (GF(2^8))
 q = 256
 IRREDUCIBLE_256 = 0b100011101 # Polynôme: x^8 + x^4 + x^3 + x^2 + 1 
 
@@ -111,7 +110,7 @@ def mat_vec_mul(M, v):
     return res
 
 def invert_matrix(M):
-    """Inversion de matrice (Gauss-Jordan) sur F_q."""
+    """Inversion de matrice sur F_q."""
     n = len(M)
     A = [[int(x) for x in row] for row in M]
     I = [[1 if i == j else 0 for j in range(n)] for i in range(n)]
@@ -142,12 +141,9 @@ def invert_matrix(M):
                 I[row] = [gf_sub(I[row][i], gf_mul(factor, I[col][i])) for i in range(n)]
     return I
 
-# ==========================================
-# 2. LOGIQUE POLYNÔMES QUADRATIQUES UOV
-# ==========================================
+# --- FONCTIONS UOV (GENRATION ET EVALUATION POLYNOMIALE) ---
 
-
-#Génère les polynomes quadratiques
+# Génère les polynomes quadratiques
 def generate_uov_polynomials(n, m, v):
     o = n - v
     polys = [] 
@@ -161,26 +157,26 @@ def generate_uov_polynomials(n, m, v):
         polys.append(poly)
     return polys
 
- #Évalue un polynôme F_i sur le vecteur x dans F_q.
+# Évalue un polynôme F_i sur le vecteur x dans F_q.
 def eval_poly(poly, x, v):
     o = len(x) - v
     xv = [int(i) for i in x[:v]] # Variables Vinegar
     xo = [int(i) for i in x[v:]]  # Variables Oil
     res = poly["const"]
     
-    # 1. Terme quadratique Vinegar-Vinegar (xv_i * xv_j)
+    # Terme quadratique Vinegar-Vinegar (xv_i * xv_j)
     for i in range(v):
         for j in range(v):
             term = gf_mul(poly["vv"][i][j], gf_mul(xv[i], xv[j])) # Utilisation de gf_mul
             res = gf_add(res, term) # Utilisation de gf_add
             
-    # 2. Terme quadratique Vinegar-Oil (xv_i * xo_j)
+    # Terme quadratique Vinegar-Oil (xv_i * xo_j)
     for i in range(v):
         for j in range(o):
             term = gf_mul(poly["vo"][i][j], gf_mul(xv[i], xo[j])) # Utilisation de gf_mul
             res = gf_add(res, term) # Utilisation de gf_add
             
-    # 3. Terme linéaire
+    # Terme linéaire
     x_full = xv + xo 
     for i in range(len(x_full)):
         term = gf_mul(poly["lin"][i], x_full[i]) # Utilisation de gf_mul
@@ -194,9 +190,7 @@ def eval_polys(polys, x, v):
     
     return [eval_poly(p, x, v) for p in polys]
 
-# ==========================================
-# 3. FONCTIONS PRINCIPALES
-# ==========================================
+# --- FONCTIONS PRINCIPALES ---
 
 #Génère les clés secrètes et publiques UOV.
 def KeyGen(n, v, m):
@@ -234,7 +228,7 @@ def Sign(keypair, message):
     m = keypair["m"]
     o = n - v
     
-    # Hashing (réduction dans F_q)
+    # Hashage
     h = hashlib.sha256(message.encode()).digest()
     while len(h) < m: 
         h += hashlib.sha256(h).digest()
