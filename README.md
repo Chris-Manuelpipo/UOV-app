@@ -1,75 +1,163 @@
-🔑 UOVapp : Système de Signature Post-Quantique UOV en Python
+# 🔑 UOV-app — Implémentation Python du Schéma de Signature Post-Quantique UOV
 
-Ce projet implémente un système de signature numérique basé sur le schéma Unbalanced Oil and Vinegar (UOV), une des constructions de cryptographie asymétrique multivariée considérée comme résistante aux attaques par ordinateurs quantiques.
+UOV-app est une implémentation fonctionnelle du schéma de signature **Unbalanced Oil and Vinegar (UOV)**, une construction de cryptographie multivariée reconnue pour sa résistance aux attaques quantiques.
 
-L'application est fournie avec une interface utilisateur graphique (GUI), développée avec PySide6 (Qt), pour démontrer visuellement la génération des clés, la signature des messages et la vérification des signatures.
+Le projet inclut une **interface graphique (GUI)** développée avec **PySide6**, permettant de générer des clés, signer des messages et vérifier des signatures de manière intuitive.
 
-🌟 Fonctionnalités Clés
+---
 
-Implémentation UOV Complète : Intègre les fonctions de génération de clés (KeyGen), de signature (Sign) et de vérification (Verify) du schéma UOV.
+## 🌟 Fonctionnalités Principales
 
-Résistance Post-Quantique : Utilisation de la cryptographie multivariée, candidate à la standardisation pour sa sécurité face aux algorithmes quantiques (comme l'algorithme de Shor).
+- **Implémentation UOV complète (KeyGen, Sign, Verify)**  
+  Code mathématique développé **à la main**, sans bibliothèque externe de corps finis.
 
-Interface Utilisateur Fluide : Utilisation du multithreading (QThread) pour exécuter les calculs cryptographiques longs (notamment la génération des clés) en arrière-plan, garantissant que l'interface utilisateur reste toujours réactive et ne "gèle" jamais.
+- **Cryptographie Post-Quantique**  
+  Utilisation d'un corps fini **GF(256)** (champ binaire étendu), conforme aux constructions UOV classiques.  
+  Paramètres par défaut : **v = 112**, **o = 44** (jeu recommandé UOV-IP du NIST).
 
-Paramétrage Flexible : Permet de configurer les paramètres de sécurité clés de UOV (v pour Vinegar et o pour Oil) via l'interface.
+- **Interface graphique réactive (PySide6)**  
+  L'application repose sur **QThread** pour exécuter les opérations lourdes (notamment KeyGen) en arrière-plan.  
+  La GUI reste fluide et affiche une **barre de progression** pendant les calculs.
 
-💻 Structure du Projet
+- **Paramétrage configurable**  
+  L'utilisateur peut choisir les valeurs de *v* (Vinegar) et *o* (Oil) avant la génération des clés.
 
-Le projet est divisé en deux parties principales :
+- **Signatures sérialisées en JSON**  
+  Lisibles, exportables et facilement manipulables.
 
-uov/uov.py (Cœur Cryptographique) : Contient toute la logique mathématique et cryptographique (manipulation des polynômes quadratiques, inversion de matrice, etc.).
+---
 
-gui/main_app.py (Interface Utilisateur) : Gère l'application graphique, les interactions utilisateur et le lancement des opérations cryptographiques dans des threads séparés.
+## 🧩 Architecture du Projet
 
-🚀 Démarrage Rapide
+```
+UOV-app/
+│
+├── uov/
+│   └── uov.py          # Cœur cryptographique (polynômes, GF(256), KeyGen, Sign, Verify)
+│
+└── interface/
+    └── main_app.py     # Point d'entrée de l'interface graphique PySide6
+```
 
-Prérequis
+### Composants principaux
 
-Python 3.12
+- **uov/uov.py**  
+  Implémente l'intégralité de la logique cryptographique :
+  - Manipulations dans GF(256)
+  - Inversion et opérations matricielles
+  - Polynômes quadratiques
+  - KeyGen, Sign, Verify du schéma UOV classique
 
-Les bibliothèques nécessaires : PySide6
+- **interface/main_app.py**  
+  Interface graphique Qt/PySide6, gestion des threads, interactions utilisateur, affichage des coefficients de la clé publique et de la signature.
 
-Installation
+---
 
-Clonez le dépôt :
+## 🚀 Installation
 
-git clone [https://github.com/Chris-Manuelpipo/UOVapp.git](https://github.com/Chris-Manuelpipr/UOVapp.git)
-cd UOV-PySig
+### Prérequis
 
+- Python **3.12** (fonctionne également sur Python 3.x récents)
+- Système compatible PySide6 (Linux, Windows, macOS)
 
-Installez les dépendances Python (PySide6 est nécessaire pour l'interface graphique) :
+### Cloner le dépôt
 
+```bash
+git clone https://github.com/Chris-Manuelpipo/UOV-app.git
+cd UOV-app
+```
+
+### Installer les dépendances
+
+```bash
 pip install PySide6
+```
 
+Aucune autre bibliothèque externe n'est nécessaire.
 
-Exécution
+---
 
-Lancez l'application GUI depuis le répertoire racine :
+## ▶️ Exécution de l'application
 
-python gui/main_app.py
+Depuis la racine du projet :
 
+```bash
+python interface/main_app.py
+```
 
-⚙️ Utilisation de l'Application GUI
+L'interface se lance immédiatement.
 
-Générer les Clés :
+---
 
-Dans l'onglet  Générer les clés, choisissez les paramètres v (Vinegar) et o (Oil). Assurez-vous que v > o.
+## ⚙️ Utilisation
 
-Cliquez sur " Générer les clés". L'application démarre le calcul en arrière-plan et affiche un résumé structurel de la clé publique une fois terminé (évitant le gel de l'interface).
+### 1. Génération des clés
 
-Signer :
+1. Choisir les valeurs **v** et **o** (par défaut : 112/44)
+   - ⚠️ **Attention** : la règle de sécurité UOV impose **v > o**
+2. Cliquer sur **Générer les clés**
+3. L'application affiche une barre de progression, puis un résumé des coefficients de la clé publique
 
-Allez dans l'onglet  Signer un message.
+### 2. Signature
 
-Entrez le message et cliquez sur "Signer le message". La signature UOV (un long vecteur d'entiers) est affichée.
+1. Aller dans **Signer un message**
+2. Entrer un message texte (sans limite particulière)
+3. Le message est automatiquement haché SHA-256, puis signé
+4. La signature (liste d'entiers) est affichée et sérialisée en JSON
 
-Vérifier :
+### 3. Vérification
 
-Dans l'onglet " Vérifier une signature, entrez le message original et copiez/collez le vecteur de signature.
+1. Aller dans **Vérifier une signature**
+2. Fournir :
+   - Le message original
+   - La signature au format JSON
+3. Cliquer sur **Vérifier** : la GUI confirme ou rejette la signature
 
-Cliquez sur " Vérifier" pour confirmer si la signature est valide pour le message donné avec la clé publique générée.
+> ℹ️ **Note** : L'interface ne propose pas encore l'export des clés en fichier.
 
- Contribution
+---
 
-Les contributions sont les bienvenues ! Si vous souhaitez améliorer la performance des algorithmes cryptographiques, ajouter des fonctionnalités ou corriger des bugs, veuillez soumettre une Pull Request.
+## 🔐 Notes de Sécurité
+
+⚠️ **Ce projet est académique.**  
+Il ne doit pas être utilisé en production, ni pour des données sensibles.
+
+**Limitations :**
+- Pas d'audit cryptographique
+- Pas de protections contre les attaques par canaux cachés (timing, side-channel)
+- Pas d'implémentation certifiée du standard UOV-IP
+- Paramètres recommandés mais non garantis contre les attaques avancées
+
+---
+
+## 🛠️ Contribution
+
+Les contributions sont encouragées :
+
+- Optimisation des opérations dans GF(256)
+- Réorganisation du cœur cryptographique
+- Ajout de tests unitaires
+- Améliorations GUI (visualisation, export, feedback)
+
+Aucune convention de commit spécifique n'est imposée.
+
+### Pour contribuer :
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/amelioration`)
+3. Commit vos changements (`git commit -m 'Ajout de fonctionnalité'`)
+4. Push vers la branche (`git push origin feature/amelioration`)
+5. Ouvrir une Pull Request
+
+---
+
+## 📄 Licence
+
+Ce projet est distribué sous licence MIT. 
+
+---
+
+## 👤 Auteur
+
+**Chris-Manuelpipo et toute l'équipe**  Pour le projet de science de l'information sur le schéma UOV.
+GitHub: [@Chris-Manuelpipo](https://github.com/Chris-Manuelpipo)
